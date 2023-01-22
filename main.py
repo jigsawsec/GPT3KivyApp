@@ -25,18 +25,6 @@ class MainScreen(Screen):
         if self.chat_balance > 0:
             self.chat_balance -= 1
             self.balance_label.text = f'Chat Balance: {self.chat_balance}'
-            # start chat logic here
-        else:
-            self.show_watch_ad_popup()
-
-    def show_watch_ad_popup(self):
-        watch_ad_popup = WatchAdPopup()
-        watch_ad_popup.open()
-    
-    def start_chat(self):
-        if self.chat_balance > 0:
-            self.chat_balance -= 1
-            self.balance_label.text = f'Chat Balance: {self.chat_balance}'
             user_input = self.text_input.text
             self.text_input.text = ''
             response = openai.Completion.create(
@@ -52,14 +40,15 @@ class MainScreen(Screen):
         else:
             self.history.text += '\nYou have run out of chat balance, watch an ad to get more chats!'
 
-
+    def show_watch_ad_popup(self):
+        watch_ad_popup = WatchAdPopup()
+        watch_ad_popup.open()
+    
 class WatchAdPopup(Popup):
     def watch_ad(self):
         self.dismiss()
         main_screen = App.get_running_app().root.get_screen('main')
         main_screen.watch_ad()
-
-
 
 class RootWidget(ScreenManager):
     pass
